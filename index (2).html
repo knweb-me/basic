@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#121212" />
+  <meta name="description" content="KNWEB Dine — modern comfort food, thoughtfully crafted. Explore the menu, plan your budget, and reserve a table." />
+  <title>KNWEB Dine — Taste the Perfection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root{--bg:#121212;--panel:#1b1b1b;--gold:#e9b45a;--gold2:#f6d18b;--muted:#a5a5a5;--line:rgba(255,255,255,.09)}
+    *{box-sizing:border-box;scroll-behavior:smooth}
+    body{background:var(--bg);color:#f5f1e9;font-family:'DM Sans',sans-serif}
+    h1,h2,h3,.serif{font-family:'Playfair Display',serif}
+    .gold{color:var(--gold)} .gold-bg{background:var(--gold);color:#161616}
+    .glass{background:rgba(23,23,23,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.09)}
+    .section-label{letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-size:.72rem;font-weight:700}
+    .btn-gold{background:linear-gradient(135deg,#f5d18b,#d99a37);color:#17130d;font-weight:700;transition:transform .2s,box-shadow .2s}
+    .btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 28px #e9b45a30}
+    .btn-outline{border:1px solid rgba(233,180,90,.55);color:#f3d39a;transition:.2s}
+    .btn-outline:hover{background:#e9b45a16;border-color:var(--gold)}
+    .hero-bg{background-image:linear-gradient(90deg,rgba(10,10,10,.92) 0%,rgba(10,10,10,.72) 48%,rgba(10,10,10,.3) 100%),linear-gradient(0deg,#121212 0%,transparent 35%),url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=2200&q=85');background-position:center;background-size:cover}
+    .food-card{background:linear-gradient(145deg,#202020,#181818);border:1px solid var(--line);transition:transform .25s,border-color .25s,box-shadow .25s}
+    .food-card:hover{transform:translateY(-5px);border-color:#e9b45a65;box-shadow:0 18px 35px #0005}
+    .food-img{height:190px;object-fit:cover;transition:transform .5s}.food-card:hover .food-img{transform:scale(1.04)}
+    .image-wrap{overflow:hidden;position:relative}
+    .filter-btn{border:1px solid #ffffff18;color:#b9b9b9;transition:.2s}
+    .filter-btn.active,.filter-btn:hover{background:var(--gold);color:#17130d;border-color:var(--gold)}
+    .field{width:100%;background:#141414;border:1px solid #ffffff1a;border-radius:12px;padding:12px 14px;color:#f7f1e8;outline:none;transition:border-color .2s}
+    .field:focus{border-color:#e9b45a99;box-shadow:0 0 0 3px #e9b45a13}
+    .field::placeholder{color:#777}
+    select.field option{background:#191919}
+    .overlay{background:rgba(0,0,0,.68);backdrop-filter:blur(5px)}
+    .drawer{transform:translateX(105%);transition:transform .3s ease}.drawer.open{transform:translateX(0)}
+    .modal{opacity:0;pointer-events:none;transition:opacity .2s}.modal.show{opacity:1;pointer-events:auto}
+    .modal-panel{transform:translateY(14px) scale(.98);transition:transform .25s}.modal.show .modal-panel{transform:translateY(0) scale(1)}
+    .pill{border:1px solid #ffffff18;background:#ffffff08}
+    .text-muted{color:var(--muted)}
+    .divider{height:1px;background:var(--line)}
+    .no-scrollbar::-webkit-scrollbar{display:none}.no-scrollbar{scrollbar-width:none}
+    #qrcode img,#qrcode canvas{margin:auto;border-radius:6px}
+    .toast{transform:translateY(18px);opacity:0;pointer-events:none;transition:.25s}.toast.show{transform:translateY(0);opacity:1}
+    @media(max-width:640px){.hero-bg{background-position:58% center}.food-img{height:165px}}
+  </style>
+  <script>
+    tailwind.config={theme:{extend:{colors:{kn:{gold:'#e9b45a',dark:'#121212',panel:'#1b1b1b'}},fontFamily:{sans:['DM Sans','sans-serif'],serif:['Playfair Display','serif']}}}}
+  </script>
+</head>
+<body class="antialiased">
+  <!-- Change the contact number, address and map query in the configuration block near the bottom. -->
+  <header class="fixed top-0 inset-x-0 z-40">
+    <nav class="glass mx-auto max-w-[1440px] mt-0 md:mt-3 md:rounded-2xl px-4 sm:px-7 py-3 flex items-center justify-between">
+      <a href="#home" class="flex items-center gap-3" aria-label="KNWEB Dine home">
+        <span class="w-10 h-10 rounded-xl gold-bg grid place-items-center text-lg"><i class="fa-solid fa-utensils"></i></span>
+        <span class="leading-tight"><span class="block tracking-[.18em] text-sm sm:text-base font-bold">KNWEB <span class="gold">DINE</span></span><span class="text-[9px] tracking-[.25em] text-neutral-500">A TASTE ABOVE</span></span>
+      </a>
+      <div class="hidden lg:flex items-center gap-7 text-sm text-neutral-300">
+        <a class="hover:text-amber-300 transition" href="#home">Home</a><a class="hover:text-amber-300 transition" href="#menu">Menu</a><a class="hover:text-amber-300 transition" href="#budget">Budget Calculator</a><a class="hover:text-amber-300 transition" href="#reservation">Reservation</a><a class="hover:text-amber-300 transition" href="#location">Location</a>
+      </div>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <span id="openBadge" class="hidden sm:inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs border border-white/10 bg-white/5"><span class="w-2 h-2 rounded-full bg-green-400" id="statusDot"></span><span id="openText">Checking hours…</span></span>
+        <button onclick="openCart()" class="relative rounded-xl border border-white/10 px-3 py-2.5 hover:border-amber-400/50 transition" aria-label="Open cart"><i class="fa-solid fa-bag-shopping gold"></i><span id="cartCount" class="absolute -top-2 -right-2 min-w-5 h-5 px-1 rounded-full gold-bg text-[10px] grid place-items-center font-bold">0</span></button>
+        <button id="mobileMenuBtn" class="lg:hidden w-10 h-10 rounded-xl border border-white/10" aria-label="Toggle menu"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </nav>
+    <div id="mobileMenu" class="hidden lg:hidden glass mx-3 rounded-2xl p-4 mt-1 grid grid-cols-2 gap-3 text-sm">
+      <a href="#home" class="py-2">Home</a><a href="#menu" class="py-2">Menu</a><a href="#budget" class="py-2">Budget Calculator</a><a href="#reservation" class="py-2">Reservation</a><a href="#location" class="py-2">Location</a>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="hero-bg min-h-[740px] md:min-h-[820px] flex items-center pt-28 pb-20">
+      <div class="max-w-7xl mx-auto w-full px-5 sm:px-8 lg:px-12">
+        <div class="max-w-2xl">
+          <div class="inline-flex items-center gap-2 pill rounded-full px-4 py-2 mb-7 text-xs sm:text-sm text-neutral-300"><span class="gold">✦</span> Crafted with passion. Served with care.</div>
+          <p class="section-label mb-4">Welcome to KNWEB Dine</p>
+          <h1 class="text-5xl sm:text-6xl lg:text-7xl leading-[1.08] font-semibold mb-6">Taste the <span class="gold italic">Perfection</span><br class="hidden sm:block"> from Anywhere.</h1>
+          <p class="text-neutral-300 text-base sm:text-lg leading-8 max-w-xl mb-9">A thoughtful take on your favourites — fresh ingredients, bold flavours, and a dining experience made for sharing.</p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <a href="#menu" class="btn-gold rounded-xl px-7 py-4 text-center"><i class="fa-solid fa-utensils mr-2"></i> Explore Menu <i class="fa-solid fa-arrow-right ml-2 text-sm"></i></a>
+            <a href="#location" class="btn-outline rounded-xl px-7 py-4 text-center"><i class="fa-solid fa-location-dot mr-2"></i> Get Directions</a>
+          </div>
+          <div class="flex flex-wrap gap-8 mt-12 pt-7 border-t border-white/15">
+            <div><p class="text-2xl font-semibold">100<span class="gold">%</span></p><p class="text-xs text-neutral-400 mt-1">Made with care</p></div>
+            <div><p class="text-2xl font-semibold">Fresh<span class="gold">.</span></p><p class="text-xs text-neutral-400 mt-1">Quality ingredients</p></div>
+            <div><p class="text-2xl font-semibold">Every<span class="gold"> bite</span></p><p class="text-xs text-neutral-400 mt-1">Worth remembering</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-16 md:py-20">
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="glass rounded-2xl p-6 flex gap-4"><span class="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-300 grid place-items-center text-xl shrink-0"><i class="fa-solid fa-leaf"></i></span><div><h3 class="text-lg mb-1">Fresh by Nature</h3><p class="text-sm text-muted leading-6">Ingredients chosen for flavour, freshness, and balance.</p></div></div>
+        <div class="glass rounded-2xl p-6 flex gap-4"><span class="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-300 grid place-items-center text-xl shrink-0"><i class="fa-solid fa-fire-burner"></i></span><div><h3 class="text-lg mb-1">Made to Order</h3><p class="text-sm text-muted leading-6">Your favourites prepared with care, one order at a time.</p></div></div>
+        <div class="glass rounded-2xl p-6 flex gap-4"><span class="w-12 h-12 rounded-xl bg-amber-400/10 text-amber-300 grid place-items-center text-xl shrink-0"><i class="fa-solid fa-heart"></i></span><div><h3 class="text-lg mb-1">Made for Sharing</h3><p class="text-sm text-muted leading-6">A welcoming spot for friends, family, and good conversations.</p></div></div>
+      </div>
+    </section>
+
+    <section id="menu" class="py-20 bg-[#171717]">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-9">
+          <div><p class="section-label mb-3">From our kitchen</p><h2 class="text-4xl sm:text-5xl">Explore the <span class="gold italic">Menu</span></h2><p class="text-muted mt-3 max-w-lg">Find your next favourite, from satisfying classics to something sweet.</p></div>
+          <div class="relative w-full md:max-w-xs"><i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500"></i><input id="menuSearch" class="field pl-11" type="search" placeholder="Search the menu…" aria-label="Search menu"></div>
+        </div>
+        <div id="categoryTabs" class="flex gap-2 overflow-x-auto no-scrollbar pb-2 mb-7">
+          <button class="filter-btn active rounded-full px-5 py-2.5 text-sm whitespace-nowrap" data-category="All">All</button>
+          <button class="filter-btn rounded-full px-5 py-2.5 text-sm whitespace-nowrap" data-category="Burgers">Burgers</button>
+          <button class="filter-btn rounded-full px-5 py-2.5 text-sm whitespace-nowrap" data-category="Pizza">Pizza</button>
+          <button class="filter-btn rounded-full px-5 py-2.5 text-sm whitespace-nowrap" data-category="Beverages">Beverages</button>
+          <button class="filter-btn rounded-full px-5 py-2.5 text-sm whitespace-nowrap" data-category="Desserts">Desserts</button>
+        </div>
+        <div id="foodGrid" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-5"></div>
+        <div id="emptyMenu" class="hidden text-center py-16 text-neutral-400"><i class="fa-solid fa-magnifying-glass text-3xl mb-3"></i><p>No dishes match your search. Try another term.</p></div>
+        <div class="mt-10 flex flex-col sm:flex-row items-center justify-between gap-4 rounded-2xl border border-amber-300/20 bg-amber-300/[.04] p-5 sm:p-6"><div><p class="font-semibold">Planning a meal with friends?</p><p class="text-sm text-muted mt-1">Add your favourites and split the bill in seconds.</p></div><button onclick="openCart()" class="btn-outline rounded-xl px-5 py-3 whitespace-nowrap"><i class="fa-solid fa-basket-shopping mr-2"></i> View your order</button></div>
+      </div>
+    </section>
+
+    <section id="budget" class="py-20">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div><p class="section-label mb-3">Good food, smart planning</p><h2 class="text-4xl sm:text-5xl leading-tight">Make every taka <span class="gold italic">count.</span></h2><p class="text-muted leading-7 mt-5 max-w-xl">Build your order, choose how many people are sharing, and get an instant estimate before you head over. No account needed.</p>
+            <div class="mt-7 space-y-4 text-sm text-neutral-300"><p><i class="fa-solid fa-check gold mr-3"></i> Live total from your selected menu items</p><p><i class="fa-solid fa-check gold mr-3"></i> Automatic per-person split</p><p><i class="fa-solid fa-check gold mr-3"></i> Digital order QR for counter reference</p></div>
+          </div>
+          <div class="glass rounded-3xl p-6 sm:p-8">
+            <div class="flex items-center justify-between mb-6"><div><p class="section-label mb-2">Split bill calculator</p><h3 class="text-2xl">Your table budget</h3></div><span class="w-12 h-12 rounded-2xl bg-amber-300/10 text-amber-300 grid place-items-center text-xl"><i class="fa-solid fa-calculator"></i></span></div>
+            <div class="rounded-2xl bg-black/25 border border-white/5 p-5 mb-5"><p class="text-sm text-muted">Current order total</p><p id="budgetTotal" class="text-4xl font-semibold mt-2">৳0 <span class="text-sm text-muted font-normal">BDT</span></p><p id="budgetItemCount" class="text-xs text-neutral-500 mt-2">0 items selected</p></div>
+            <label for="peopleCount" class="block text-sm text-neutral-300 mb-2">Number of people sharing</label><div class="flex gap-3"><input id="peopleCount" class="field" type="number" min="1" max="50" value="4"><button onclick="openCart()" class="btn-gold rounded-xl px-5 whitespace-nowrap"><i class="fa-solid fa-plus mr-1"></i> Add items</button></div>
+            <div class="divider my-5"></div><div class="flex items-end justify-between gap-4"><div><p class="text-sm text-muted">Estimated cost per person</p><p id="perPerson" class="text-3xl sm:text-4xl gold font-semibold mt-1">৳0</p></div><span class="text-xs text-neutral-500 text-right">BDT · before any applicable taxes</span></div>
+            <button onclick="openQR()" class="w-full mt-6 rounded-xl py-4 btn-outline"><i class="fa-solid fa-qrcode mr-2"></i> Generate My Digital Order QR Code</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="reservation" class="py-20 bg-[#171717]">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div class="grid lg:grid-cols-[.8fr_1.2fr] gap-12">
+          <div class="flex flex-col justify-center"><p class="section-label mb-3">Your seat is waiting</p><h2 class="text-4xl sm:text-5xl leading-tight">Reserve a table.<br><span class="gold italic">Make it a moment.</span></h2><p class="text-muted leading-7 mt-5 max-w-md">Share your preferred time and party details. Your reservation request will open in WhatsApp for you to send directly to our team.</p><div class="mt-8 rounded-2xl border border-white/10 p-5 flex gap-4"><i class="fa-regular fa-clock gold text-xl mt-1"></i><div><p class="font-semibold">Daily opening hours</p><p class="text-sm text-muted mt-1">10:00 AM – 11:00 PM</p><p class="text-xs text-neutral-500 mt-2">Requests are subject to confirmation by the restaurant.</p></div></div></div>
+          <form id="reservationForm" class="glass rounded-3xl p-5 sm:p-8 grid sm:grid-cols-2 gap-5">
+            <div class="sm:col-span-2"><p class="section-label mb-2">Table reservation</p><h3 class="text-2xl">Tell us your plans</h3></div>
+            <div><label class="block text-sm mb-2" for="guestName">Full name *</label><input class="field" id="guestName" name="name" required placeholder="Your name" autocomplete="name"></div>
+            <div><label class="block text-sm mb-2" for="guestPhone">Phone number *</label><input class="field" id="guestPhone" name="phone" type="tel" required placeholder="+880 1XXX-XXXXXX" autocomplete="tel"></div>
+            <div><label class="block text-sm mb-2" for="reserveDate">Date *</label><input class="field" id="reserveDate" name="date" type="date" required></div>
+            <div><label class="block text-sm mb-2" for="reserveTime">Preferred time *</label><select class="field" id="reserveTime" name="time" required><option value="">Choose a time</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option><option>7:00 PM</option><option>8:00 PM</option><option>9:00 PM</option><option>10:00 PM</option></select></div>
+            <div><label class="block text-sm mb-2" for="guestCount">Number of guests *</label><select class="field" id="guestCount" name="guests" required><option value="1">1 guest</option><option value="2" selected>2 guests</option><option value="3">3 guests</option><option value="4">4 guests</option><option value="5">5 guests</option><option value="6">6 guests</option><option value="7">7 guests</option><option value="8">8 guests</option><option value="9">9 guests</option><option value="10">10 guests</option><option value="11+">11+ guests</option></select></div>
+            <div><label class="block text-sm mb-2" for="specialRequest">Special request</label><input class="field" id="specialRequest" name="request" placeholder="Celebration, seating, allergies…"></div>
+            <div class="sm:col-span-2 rounded-xl bg-white/[.03] p-4 text-xs text-neutral-400 leading-5"><i class="fa-brands fa-whatsapp text-green-400 mr-2"></i> Your details and current cart will be prepared as a WhatsApp message. Nothing is sent automatically; you review and tap Send in WhatsApp.</div>
+            <button class="sm:col-span-2 btn-gold rounded-xl py-4" type="submit"><i class="fa-brands fa-whatsapp mr-2 text-lg"></i> Confirm &amp; Send via WhatsApp</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="location" class="py-20">
+      <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8"><div><p class="section-label mb-3">Come find us</p><h2 class="text-4xl sm:text-5xl">Good taste is <span class="gold italic">closer.</span></h2><p id="addressLabel" class="text-muted mt-3">Dhaka, Bangladesh · Replace with your exact restaurant address</p></div><a id="directionsLink" target="_blank" rel="noopener noreferrer" href="https://www.google.com/maps/dir/?api=1&destination=Dhaka%2C%20Bangladesh" class="btn-gold rounded-xl px-6 py-4 text-center"><i class="fa-solid fa-diamond-turn-right mr-2"></i> Get Directions</a></div>
+        <div class="rounded-3xl overflow-hidden border border-white/10 h-[300px] sm:h-[420px] bg-[#1b1b1b]"><iframe id="mapFrame" title="Map showing KNWEB Dine location" class="w-full h-full grayscale-[.45] contrast-[1.05]" src="https://maps.google.com/maps?q=Dhaka%2C%20Bangladesh&t=&z=13&ie=UTF8&iwloc=&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe></div>
+        <p class="text-xs text-neutral-500 mt-3"><i class="fa-solid fa-circle-info mr-1"></i> The map currently uses a sample Dhaka location. Update the address in the configuration section before publishing.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/10 bg-[#0d0d0d] pt-12 pb-7">
+    <div class="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-9 pb-10">
+        <div class="lg:col-span-2"><a href="#home" class="inline-flex items-center gap-3"><span class="w-10 h-10 rounded-xl gold-bg grid place-items-center"><i class="fa-solid fa-utensils"></i></span><span class="tracking-[.18em] font-bold">KNWEB <span class="gold">DINE</span></span></a><p class="text-sm text-muted leading-6 max-w-sm mt-4">A little warmth, a lot of flavour. Join us for a fresh take on comfort food and memorable moments.</p><div class="flex gap-3 mt-5"><a class="w-10 h-10 rounded-full border border-white/10 grid place-items-center hover:text-amber-300" href="https://www.facebook.com/" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a><a class="w-10 h-10 rounded-full border border-white/10 grid place-items-center hover:text-amber-300" href="https://www.instagram.com/" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a><a class="w-10 h-10 rounded-full border border-white/10 grid place-items-center hover:text-amber-300" href="https://www.tiktok.com/" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a></div></div>
+        <div><h3 class="font-semibold mb-4">Explore</h3><div class="space-y-3 text-sm text-muted"><a class="block hover:text-amber-300" href="#menu">Our Menu</a><a class="block hover:text-amber-300" href="#budget">Budget Calculator</a><a class="block hover:text-amber-300" href="#reservation">Reservations</a><a class="block hover:text-amber-300" href="#location">Find Us</a></div></div>
+        <div><h3 class="font-semibold mb-4">Visit us</h3><div class="space-y-3 text-sm text-muted"><p><i class="fa-regular fa-clock gold mr-2"></i> Daily · 10 AM – 11 PM</p><p><i class="fa-solid fa-location-dot gold mr-2"></i><span id="footerAddress">Dhaka, Bangladesh</span></p><p><i class="fa-solid fa-phone gold mr-2"></i><a id="footerPhone" href="tel:+8801700000000">+880 1700-000000</a></p></div></div>
+      </div>
+      <div class="divider"></div><div class="pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-neutral-500"><p>© <span id="year"></span> KNWEB Dine. All rights reserved.</p><p>Made with <span class="text-rose-400">♥</span> and a little extra flavour.</p></div>
+    </div>
+  </footer>
+
+  <!-- Cart drawer -->
+  <div id="cartOverlay" class="fixed inset-0 z-50 overlay hidden" onclick="closeCart()"></div>
+  <aside id="cartDrawer" class="drawer fixed right-0 top-0 bottom-0 z-[51] w-full max-w-md bg-[#171717] border-l border-white/10 flex flex-col" aria-label="Shopping cart" aria-hidden="true">
+    <div class="flex items-center justify-between p-5 border-b border-white/10"><div><p class="section-label mb-1">Your selection</p><h2 class="text-2xl">Your order</h2></div><button onclick="closeCart()" class="w-10 h-10 rounded-xl border border-white/10" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button></div>
+    <div id="cartItems" class="flex-1 overflow-y-auto p-5 space-y-4"><div class="text-center py-16 text-neutral-500"><i class="fa-solid fa-basket-shopping text-3xl mb-3"></i><p>Your cart is waiting for something delicious.</p><button onclick="closeCart();document.querySelector('#menu').scrollIntoView()" class="text-amber-300 text-sm mt-4">Browse menu <i class="fa-solid fa-arrow-right ml-1"></i></button></div></div>
+    <div class="p-5 border-t border-white/10 bg-black/20"><label for="orderNote" class="text-sm text-neutral-300 block mb-2">Order note (optional)</label><textarea id="orderNote" class="field resize-none" rows="2" placeholder="Anything the kitchen should know?"></textarea><div class="flex justify-between mt-5 text-sm text-neutral-400"><span>Subtotal</span><span id="cartSubtotal">৳0</span></div><div class="flex justify-between items-end mt-2"><span class="font-semibold">Total estimate</span><span id="cartTotal" class="text-2xl gold font-semibold">৳0</span></div><p class="text-[11px] text-neutral-500 mt-2">Final price and availability are confirmed by the restaurant.</p><button onclick="openQR()" class="w-full mt-4 rounded-xl py-3 btn-gold"><i class="fa-solid fa-qrcode mr-2"></i> Generate Digital Order QR</button><button onclick="document.querySelector('#reservation').scrollIntoView({behavior:'smooth'});closeCart()" class="w-full mt-2 rounded-xl py-3 btn-outline">Reserve / Send via WhatsApp</button></div>
+  </aside>
+
+  <!-- QR modal -->
+  <div id="qrModal" class="modal fixed inset-0 z-[60] flex items-center justify-center p-4 overlay" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+    <div class="modal-panel glass rounded-3xl w-full max-w-md p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeQR()" class="absolute top-4 right-4 w-9 h-9 rounded-xl border border-white/10" aria-label="Close QR modal"><i class="fa-solid fa-xmark"></i></button>
+      <div class="text-center"><span class="w-14 h-14 rounded-2xl bg-amber-300/10 text-amber-300 grid place-items-center text-2xl mx-auto"><i class="fa-solid fa-qrcode"></i></span><p class="section-label mt-5 mb-2">Your digital order pass</p><h2 id="qrTitle" class="text-3xl">Ready to share</h2><p class="text-sm text-muted mt-2">Show this screen to the team when you arrive.</p></div>
+      <div class="bg-white rounded-2xl p-4 mt-6"><div id="qrcode" class="min-h-[180px] grid place-items-center"></div></div>
+      <div class="text-center mt-5"><p class="text-xs text-neutral-500">ORDER REFERENCE</p><p id="orderCode" class="text-xl tracking-[.14em] font-bold gold mt-1">KNWEB0000001</p><p id="qrSummary" class="text-sm text-muted mt-3"></p></div>
+      <div class="rounded-xl bg-white/[.04] border border-white/10 p-4 mt-5 text-sm"><div class="flex justify-between"><span class="text-muted">Order total</span><strong id="qrTotal">৳0</strong></div><div class="flex justify-between mt-2"><span class="text-muted">People sharing</span><strong id="qrPeople">4</strong></div><div class="flex justify-between mt-2"><span class="text-muted">Per person</span><strong id="qrPerPerson" class="gold">৳0</strong></div></div>
+      <p class="text-[11px] leading-5 text-neutral-500 mt-4 text-center">This QR is a local order summary only. It is not sent to the restaurant or stored in a central system. Keep this screen open or take a screenshot.</p>
+      <button onclick="downloadQR()" class="w-full mt-5 rounded-xl py-3 btn-outline"><i class="fa-solid fa-download mr-2"></i> Save QR image</button>
+    </div>
+  </div>
+  <div id="toast" class="toast fixed bottom-5 left-1/2 -translate-x-1/2 z-[80] glass rounded-xl px-5 py-3 text-sm shadow-2xl"></div>
+
+  <script>
+    // ===================== RESTAURANT CONFIGURATION =====================
+    // Replace these sample details before publishing the site.
+    const RESTAURANT = {
+      name: "KNWEB Dine",
+      whatsapp: "88017XXXXXXXX", // International format, digits only. Replace Xs with the real WhatsApp number.
+      phoneDisplay: "+880 1700-000000",
+      address: "Dhaka, Bangladesh", // Replace with exact street address.
+      mapQuery: "Dhaka, Bangladesh",
+      openHour: 10,
+      closeHour: 23
+    };
+
+    const menuItems = [
+      {id:1,name:"Signature Smash Burger",category:"Burgers",price:420,veg:false,spicy:1,desc:"Double smash patty, aged cheddar, house sauce.",image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=850&q=85"},
+      {id:2,name:"Crispy Chicken Burger",category:"Burgers",price:340,veg:false,spicy:1,desc:"Crunchy chicken, fresh lettuce, smoky mayo.",image:"https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&w=850&q=85"},
+      {id:3,name:"Garden Veggie Burger",category:"Burgers",price:290,veg:true,spicy:0,desc:"Seasonal vegetables, herb dressing, toasted bun.",image:"https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=850&q=85"},
+      {id:4,name:"Classic Margherita",category:"Pizza",price:590,veg:true,spicy:0,desc:"Tomato, mozzarella, basil, crisp artisan crust.",image:"https://images.unsplash.com/photo-1579751626657-72bc17010498?auto=format&fit=crop&w=850&q=85"},
+      {id:5,name:"Smoky BBQ Chicken Pizza",category:"Pizza",price:760,veg:false,spicy:1,desc:"BBQ chicken, red onion, mozzarella, herbs.",image:"https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=850&q=85"},
+      {id:6,name:"Four Cheese Pizza",category:"Pizza",price:720,veg:true,spicy:0,desc:"A rich blend of four cheeses on golden crust.",image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=850&q=85"},
+      {id:7,name:"Iced Caramel Latte",category:"Beverages",price:220,veg:true,spicy:0,desc:"Espresso, chilled milk, and caramel notes.",image:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=850&q=85"},
+      {id:8,name:"Fresh Lemon Mint",category:"Beverages",price:150,veg:true,spicy:0,desc:"Fresh lemon, mint, and a bright citrus finish.",image:"https://images.unsplash.com/photo-1513558161293-cnaf765edfd4?auto=format&fit=crop&w=850&q=85"},
+      {id:9,name:"Chocolate Fudge Cake",category:"Desserts",price:260,veg:true,spicy:0,desc:"Dark chocolate layers with a soft fudge centre.",image:"https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=850&q=85"},
+      {id:10,name:"Classic Cheesecake",category:"Desserts",price:280,veg:true,spicy:0,desc:"Creamy baked cheesecake with a buttery base.",image:"https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=850&q=85"},
+      {id:11,name:"Loaded Fries",category:"Burgers",price:240,veg:true,spicy:1,desc:"Golden fries, house seasoning, creamy drizzle.",image:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=850&q=85"},
+      {id:12,name:"Berry Smoothie",category:"Beverages",price:250,veg:true,spicy:0,desc:"A chilled blend of berries and creamy yoghurt.",image:"https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=850&q=85"}
+    ];
+
+    let activeCategory = "All";
+    let cart = {};
+    let toastTimer;
+
+    const money = amount => "৳" + Number(amount || 0).toLocaleString("en-BD", {maximumFractionDigits:0});
+    const escapeHTML = value => String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+    const cartEntries = () => Object.values(cart);
+    const cartQuantity = () => cartEntries().reduce((sum,item)=>sum+item.qty,0);
+    const cartTotal = () => cartEntries().reduce((sum,item)=>sum+item.price*item.qty,0);
+
+    function renderMenu(){
+      const search = document.getElementById("menuSearch").value.trim().toLowerCase();
+      const filtered = menuItems.filter(item => (activeCategory === "All" || item.category === activeCategory) && (item.name+" "+item.category+" "+item.desc).toLowerCase().includes(search));
+      const grid = document.getElementById("foodGrid");
+      grid.innerHTML = filtered.map(item => `
+        <article class="food-card rounded-2xl overflow-hidden flex flex-col">
+          <div class="image-wrap">
+            <img class="food-img w-full" src="${item.image}" alt="${escapeHTML(item.name)}" loading="lazy">
+            <span class="absolute top-3 left-3 rounded-full px-2.5 py-1 text-[10px] font-semibold ${item.veg?'bg-green-950/90 text-green-300':'bg-red-950/90 text-red-300'}"><i class="fa-solid fa-circle text-[7px] mr-1"></i>${item.veg?'VEG':'NON-VEG'}</span>
+            ${item.spicy?'<span class="absolute top-3 right-3 rounded-full px-2.5 py-1 bg-black/65 text-orange-300 text-[10px]"><i class="fa-solid fa-pepper-hot mr-1"></i>Spicy</span>':''}
+          </div>
+          <div class="p-4 flex flex-col flex-1">
+            <div class="flex items-center justify-between gap-2"><span class="text-[10px] uppercase tracking-[.16em] text-amber-300">${item.category}</span><span class="text-xs text-neutral-500">${item.spicy?'🌶️ Mild heat':'✦ House pick'}</span></div>
+            <h3 class="text-lg leading-snug mt-2">${escapeHTML(item.name)}</h3>
+            <p class="text-xs text-neutral-400 leading-5 mt-2 flex-1">${escapeHTML(item.desc)}</p>
+            <div class="flex items-center justify-between gap-2 mt-4 pt-3 border-t border-white/10"><span class="font-bold text-lg">${money(item.price)}</span><button onclick="addToCart(${item.id})" class="rounded-lg gold-bg w-10 h-10 hover:brightness-110 transition" aria-label="Add ${escapeHTML(item.name)} to order"><i class="fa-solid fa-plus"></i></button></div>
+          </div>
+        </article>`).join("");
+      document.getElementById("emptyMenu").classList.toggle("hidden",filtered.length>0);
+    }
+
+    function addToCart(id){
+      const item = menuItems.find(food=>food.id===id);
+      if(!item)return;
+      if(cart[id])cart[id].qty++;
+      else cart[id]={...item,qty:1,note:""};
+      renderCart(); updateBudget(); showToast(item.name+" added to your order");
+    }
+    function changeQty(id,delta){
+      if(!cart[id])return;
+      cart[id].qty+=delta;
+      if(cart[id].qty<=0)delete cart[id];
+      renderCart();updateBudget();
+    }
+    function updateItemNote(id,value){if(cart[id])cart[id].note=value}
+    function renderCart(){
+      const entries=cartEntries();
+      document.getElementById("cartCount").textContent=cartQuantity();
+      document.getElementById("cartSubtotal").textContent=money(cartTotal());
+      document.getElementById("cartTotal").textContent=money(cartTotal());
+      const container=document.getElementById("cartItems");
+      if(!entries.length){
+        container.innerHTML='<div class="text-center py-16 text-neutral-500"><i class="fa-solid fa-basket-shopping text-3xl mb-3"></i><p>Your cart is waiting for something delicious.</p><button onclick="closeCart();document.getElementById(&quot;menu&quot;).scrollIntoView({behavior:&quot;smooth&quot;})" class="text-amber-300 text-sm mt-4">Browse menu <i class="fa-solid fa-arrow-right ml-1"></i></button></div>';
+        return;
+      }
+      container.innerHTML=entries.map(item=>`
+        <div class="flex gap-3 border-b border-white/10 pb-4">
+          <img src="${item.image}" alt="" class="w-20 h-20 rounded-xl object-cover">
+          <div class="flex-1 min-w-0"><div class="flex justify-between gap-2"><h3 class="font-semibold text-sm">${escapeHTML(item.name)}</h3><span class="text-sm gold font-semibold whitespace-nowrap">${money(item.price*item.qty)}</span></div><p class="text-xs text-neutral-500 mt-1">${money(item.price)} each</p>
+          <div class="flex items-center gap-3 mt-3"><button onclick="changeQty(${item.id},-1)" class="w-7 h-7 rounded-lg border border-white/15" aria-label="Decrease quantity">−</button><span class="text-sm">${item.qty}</span><button onclick="changeQty(${item.id},1)" class="w-7 h-7 rounded-lg border border-white/15" aria-label="Increase quantity">+</button><button onclick="changeQty(${item.id},-${item.qty})" class="ml-auto text-xs text-neutral-500 hover:text-red-300"><i class="fa-regular fa-trash-can mr-1"></i>Remove</button></div>
+          <input class="field mt-3 text-xs py-2" value="${escapeHTML(item.note)}" maxlength="120" placeholder="Note for this item…" aria-label="Note for ${escapeHTML(item.name)}" oninput="updateItemNote(${item.id},this.value)">
+          </div>
+        </div>`).join("");
+    }
+    function updateBudget(){
+      const total=cartTotal(), people=Math.max(1,Math.min(50,parseInt(document.getElementById("peopleCount").value,10)||1));
+      document.getElementById("budgetTotal").innerHTML=money(total)+' <span class="text-sm text-muted font-normal">BDT</span>';
+      document.getElementById("budgetItemCount").textContent=cartQuantity()+" item"+(cartQuantity()===1?"":"s")+" selected";
+      document.getElementById("perPerson").textContent=money(Math.ceil(total/people));
+      document.getElementById("cartCount").textContent=cartQuantity();
+    }
+    function openCart(){document.getElementById("cartOverlay").classList.remove("hidden");requestAnimationFrame(()=>document.getElementById("cartDrawer").classList.add("open"));document.getElementById("cartDrawer").setAttribute("aria-hidden","false");document.body.style.overflow="hidden"}
+    function closeCart(){document.getElementById("cartDrawer").classList.remove("open");document.getElementById("cartDrawer").setAttribute("aria-hidden","true");document.getElementById("cartOverlay").classList.add("hidden");document.body.style.overflow=""}
+    function showToast(message){const toast=document.getElementById("toast");toast.textContent=message;toast.classList.add("show");clearTimeout(toastTimer);toastTimer=setTimeout(()=>toast.classList.remove("show"),2400)}
+    function makeOrderCode(){const now=Date.now().toString().slice(-7);return "KNWEB"+now}
+    function buildOrderSummary(){
+      const entries=cartEntries();
+      const people=Math.max(1,Math.min(50,parseInt(document.getElementById("peopleCount").value,10)||1));
+      const lines=entries.map(i=>`${i.name} x${i.qty} — ${money(i.price*i.qty)}${i.note?" (Note: "+i.note+")":""}`);
+      return {people,total:cartTotal(),perPerson:Math.ceil(cartTotal()/people),lines};
+    }
+    function openQR(){
+      const summary=buildOrderSummary();
+      const code=makeOrderCode();
+      document.getElementById("orderCode").textContent=code;
+      document.getElementById("qrTotal").textContent=money(summary.total);
+      document.getElementById("qrPeople").textContent=summary.people;
+      document.getElementById("qrPerPerson").textContent=money(summary.perPerson);
+      document.getElementById("qrSummary").textContent=cartQuantity()+" item"+(cartQuantity()===1?"":"s")+" · "+(summary.lines.length?summary.lines.slice(0,2).join(" · "):"No items selected");
+      const qrPayload=JSON.stringify({restaurant:RESTAURANT.name,code,items:summary.lines,totalBDT:summary.total,people:summary.people,perPersonBDT:summary.perPerson,orderNote:document.getElementById("orderNote").value||""});
+      const qr=document.getElementById("qrcode");qr.innerHTML="";
+      document.getElementById("qrModal").classList.add("show");
+      if(typeof QRCode==="undefined"){qr.innerHTML='<p class="text-red-600 text-center text-sm">QR library did not load. Check your internet connection and try again.</p>'}
+      else new QRCode(qr,{text:qrPayload,width:190,height:190,colorDark:"#151515",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
+      document.body.style.overflow="hidden";
+    }
+    function closeQR(){document.getElementById("qrModal").classList.remove("show");document.body.style.overflow=""}
+    function downloadQR(){
+      const qr=document.querySelector("#qrcode canvas");
+      const img=document.querySelector("#qrcode img");
+      const source=qr?qr.toDataURL("image/png"):(img?img.src:null);
+      if(!source){showToast("QR image is not ready yet");return}
+      const a=document.createElement("a");a.href=source;a.download=(document.getElementById("orderCode").textContent||"KNWEB-order")+".png";document.body.appendChild(a);a.click();a.remove();
+    }
+    function updateOpenStatus(){
+      const now=new Date(),minutes=now.getHours()*60+now.getMinutes();
+      const isOpen=minutes>=RESTAURANT.openHour*60&&minutes<RESTAURANT.closeHour*60;
+      const badge=document.getElementById("openBadge"),dot=document.getElementById("statusDot"),label=document.getElementById("openText");
+      label.textContent=isOpen?"Open Now":"Closed";
+      dot.className="w-2 h-2 rounded-full "+(isOpen?"bg-green-400":"bg-red-500");
+      badge.className="hidden sm:inline-flex items-center gap-2 rounded-full px-3 py-2 text-xs border "+(isOpen?"border-green-400/20 bg-green-400/5":"border-red-400/20 bg-red-400/5");
+      badge.title="Hours: 10:00 AM–11:00 PM local device time";
+    }
+    function setRestaurantLocation(){
+      const address=RESTAURANT.address,query=encodeURIComponent(RESTAURANT.mapQuery||address);
+      document.getElementById("addressLabel").textContent=address;
+      document.getElementById("footerAddress").textContent=address;
+      document.getElementById("directionsLink").href="https://www.google.com/maps/dir/?api=1&destination="+query;
+      document.getElementById("mapFrame").src="https://maps.google.com/maps?q="+query+"&t=&z=14&ie=UTF8&iwloc=&output=embed";
+      document.getElementById("footerPhone").textContent=RESTAURANT.phoneDisplay;
+      document.getElementById("footerPhone").href="tel:"+RESTAURANT.phoneDisplay.replace(/[^\d+]/g,"");
+    }
+    document.getElementById("categoryTabs").addEventListener("click",event=>{
+      const button=event.target.closest("[data-category]");if(!button)return;
+      activeCategory=button.dataset.category;
+      document.querySelectorAll(".filter-btn").forEach(btn=>btn.classList.toggle("active",btn===button));
+      renderMenu();
+    });
+    document.getElementById("menuSearch").addEventListener("input",renderMenu);
+    document.getElementById("peopleCount").addEventListener("input",updateBudget);
+    document.getElementById("mobileMenuBtn").addEventListener("click",()=>document.getElementById("mobileMenu").classList.toggle("hidden"));
+    document.querySelectorAll("#mobileMenu a").forEach(link=>link.addEventListener("click",()=>document.getElementById("mobileMenu").classList.add("hidden")));
+    document.getElementById("reservationForm").addEventListener("submit",event=>{
+      event.preventDefault();
+      const phone=RESTAURANT.whatsapp.replace(/\D/g,"");
+      if(!phone||phone.includes("X")||phone.length<10){showToast("Please set the real WhatsApp number in the configuration first.");return}
+      const data=new FormData(event.currentTarget);
+      const summary=buildOrderSummary();
+      const items=summary.lines.length?summary.lines.join("\n"):"No menu items selected";
+      const message=[
+        "Hello "+RESTAURANT.name+"! I'd like to request a table reservation.",
+        "",
+        "Name: "+data.get("name"),
+        "Phone: "+data.get("phone"),
+        "Date: "+data.get("date"),
+        "Preferred time: "+data.get("time"),
+        "Guests: "+data.get("guests"),
+        "Special request: "+(data.get("request")||"None"),
+        "",
+        "ORDER ITEMS:",
+        items,
+        "Order note: "+(document.getElementById("orderNote").value||"None"),
+        "Estimated total: "+money(summary.total),
+        "Split for "+summary.people+": "+money(summary.perPerson)+" per person",
+        "",
+        "Please confirm availability and final pricing. Thank you!"
+      ].join("\n");
+      window.open("https://wa.me/"+phone+"?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+    });
+    document.getElementById("qrModal").addEventListener("click",event=>{if(event.target.id==="qrModal")closeQR()});
+    document.addEventListener("keydown",event=>{if(event.key==="Escape"){closeCart();closeQR()}});
+    document.getElementById("reserveDate").min=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().split("T")[0];
+    document.getElementById("year").textContent=new Date().getFullYear();
+    setRestaurantLocation();renderMenu();renderCart();updateBudget();updateOpenStatus();setInterval(updateOpenStatus,30000);
+  </script>
+</body>
+</html>
